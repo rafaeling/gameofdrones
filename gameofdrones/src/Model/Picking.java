@@ -11,14 +11,22 @@ import java.awt.AWTEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
+import javax.media.j3d.Alpha;
 import javax.media.j3d.Behavior;
+import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.PickInfo;
+import javax.media.j3d.PositionInterpolator;
+import javax.media.j3d.RotPosPathInterpolator;
 import javax.media.j3d.SceneGraphPath;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.WakeupOnAWTEvent;
+import javax.vecmath.AxisAngle4f;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Quat4f;
 
 /**
  *
@@ -31,15 +39,27 @@ public class Picking extends Behavior{
     private WakeupOnAWTEvent condition;
   */
     
-    private TransformGroup referencia;
+    private RotPosPathInterpolator referencia;
     WakeupOnAWTEvent condicionRespuesta = new WakeupOnAWTEvent (KeyEvent.KEY_PRESSED);
     private Transform3D rotacion = new Transform3D ( ) ;
     private Transform3D transformAntigua = new Transform3D ( ) ;
     private Transform3D transformNueva = new Transform3D ( ) ;
+    Point3f[] puntosTrayectoria = new Point3f[2];
+    Quat4f[] puntosOrientacion = new Quat4f[2];
+    float [] knots = {0f, 1f};
+    private double velocidad = 0;
     
-    public Picking(TransformGroup laReferencia)
+    float x, y, z;
+    
+    public Picking(RotPosPathInterpolator value)
     {
-            referencia = laReferencia;
+            referencia = value;
+            
+            x = 0;
+            y = 0;
+            z = 0;
+            
+            
     }
     
     
@@ -58,22 +78,49 @@ public class Picking extends Behavior{
         KeyEvent tecla = (KeyEvent) eventos[0];
         boolean teclaCorrecta = true ;
         
+        
         switch ( tecla.getKeyCode( ) ) {
+            
+            
+            
             case KeyEvent.VK_LEFT:
-                rotacion.rotZ (-0.009); break ;
+                z = z - 1; break ;
             case KeyEvent.VK_RIGHT:
-                rotacion.rotZ ( 0.009 ) ; break ;
+                z = z + 1; ; break ;
+            
+            
             case KeyEvent.VK_UP:
-                rotacion.rotX (-0.009) ; break ;
+                y = y + 1; break ;
             case KeyEvent.VK_DOWN:
-                rotacion.rotX ( 0.009 ) ; break ;
+                y = y - 1 ; break ;
+           
             default : teclaCorrecta = false ; break ; }
     
-        referencia.getTransform ( transformAntigua ) ;
+       
+        
+        puntosTrayectoria[0] = new Point3f(0f,0,0f);
+        puntosTrayectoria[1] = new Point3f(10f,y,z);
+        
+       
+        
+        puntosOrientacion[0] = new Quat4f();
+        puntosOrientacion[0].set(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.toRadians(90)));
+        puntosOrientacion[1] = new Quat4f();
+        puntosOrientacion[1].set(new AxisAngle4f(0f, 0f, 0.0f, (float) Math.toRadians(0)));
+   
+        
+        referencia.setPathArrays(knots, puntosOrientacion, puntosTrayectoria);
+        
+        
+        //interpolator.getTransformAxis();
+   /*    
+        transformAntigua = referencia.getTransformAxis();
         
         transformNueva.mul ( rotacion , transformAntigua ) ;
         
-        referencia.setTransform(transformNueva);
+        referencia.setTransformAxis(transformNueva);
+
+*/
         
         wakeupOn(condicionRespuesta);
         
