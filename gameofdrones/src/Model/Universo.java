@@ -2,13 +2,16 @@ package Model;
 
 import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.geometry.Sphere;
+import com.sun.j3d.utils.image.TextureLoader;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Background;
+import javax.media.j3d.BoundingBox;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.Locale;
+import javax.media.j3d.Texture;
 import javax.media.j3d.VirtualUniverse;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
@@ -51,10 +54,15 @@ public class Universo {
         BranchGroup root = new BranchGroup();
     
         background = new Background();
-        background.setApplicationBounds(new BoundingSphere (new Point3d (0.0, 0.0, 0.0), 10000.0));    
+//        background.setApplicationBounds(new BoundingSphere (new Point3d (0.0, 0.0, 0.0), 10000.0)); 
+        background.setApplicationBounds(new BoundingBox (new Point3d(-5000, -5000, -5000), new Point3d(5000, 5000, 5000)));
         Appearance app = new Appearance();
-        ColoringAttributes unColorPlano = new ColoringAttributes( new Color3f(0,0,0) , ColoringAttributes.SHADE_FLAT) ;
-        app.setColoringAttributes(unColorPlano) ;
+        //ColoringAttributes unColorPlano = new ColoringAttributes( new Color3f(0,0,0) , ColoringAttributes.SHADE_FLAT) ;
+        //app.setColoringAttributes(unColorPlano);
+        Texture aTexture = new TextureLoader ("imgs/fondo4.jpg", null).getTexture();
+        //aTexture.setMinFilter(Texture.MULTI_LEVEL_POINT);
+        app.setTexture (aTexture);
+        //app.setTexture(txtr);
 
         Primitive sphere = new Sphere (1.0f, Primitive.GENERATE_TEXTURE_COORDS | Primitive.GENERATE_NORMALS_INWARD, app);
 
