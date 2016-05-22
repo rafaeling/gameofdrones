@@ -8,6 +8,7 @@ package Model;
 import Astros.*;
 import com.sun.j3d.utils.pickfast.PickCanvas;
 import java.awt.AWTEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 import javax.media.j3d.Behavior;
@@ -15,6 +16,8 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.PickInfo;
 import javax.media.j3d.SceneGraphPath;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
 import javax.media.j3d.WakeupOnAWTEvent;
 
 /**
@@ -22,64 +25,58 @@ import javax.media.j3d.WakeupOnAWTEvent;
  * @author rafael
  */
 public class Picking extends Behavior{
-
+/*
     PickCanvas pickcanvas;
     Canvas3D canvas;
     private WakeupOnAWTEvent condition;
+  */
     
-    public Picking(Canvas3D aCanvas)
+    private TransformGroup referencia;
+    WakeupOnAWTEvent condicionRespuesta = new WakeupOnAWTEvent (KeyEvent.KEY_PRESSED);
+    private Transform3D rotacion = new Transform3D ( ) ;
+    private Transform3D transformAntigua = new Transform3D ( ) ;
+    private Transform3D transformNueva = new Transform3D ( ) ;
+    
+    public Picking(TransformGroup laReferencia)
     {
-            canvas = aCanvas ;
-            condition = new WakeupOnAWTEvent (MouseEvent.MOUSE_CLICKED) ;
+            referencia = laReferencia;
     }
     
     
-    //Método disponible en las diapositivas
-    public void initSearch(BranchGroup bg) {
-        pickcanvas = new PickCanvas(canvas, bg);
-        pickcanvas.setTolerance(0.0f);
-        pickcanvas.setMode(PickInfo.PICK_GEOMETRY);
-        pickcanvas.setFlags(PickInfo.SCENEGRAPHPATH | PickInfo.CLOSEST_INTERSECTION_POINT);
-        setEnable(true);
-        
-    }
     
     @Override
     public void initialize() {
-        setEnable(false); // El pick comienza deshabilitado esperando al initSearch
-        wakeupOn(condition);
+        //setEnable(false); // El pick comienza deshabilitado esperando al initSearch
+        wakeupOn(condicionRespuesta);
     }
 
     @Override
-    public void processStimulus(Enumeration enmrtn) {
+    public void processStimulus(Enumeration criterios) {
+
+        WakeupOnAWTEvent unCriterio = (WakeupOnAWTEvent) criterios.nextElement();
+        AWTEvent[ ] eventos = unCriterio.getAWTEvent();
+        KeyEvent tecla = (KeyEvent) eventos[0];
+        boolean teclaCorrecta = true ;
+        
+        switch ( tecla.getKeyCode( ) ) {
+            case KeyEvent.VK_LEFT:
+                rotacion.rotZ (-0.009); break ;
+            case KeyEvent.VK_RIGHT:
+                rotacion.rotZ ( 0.009 ) ; break ;
+            case KeyEvent.VK_UP:
+                rotacion.rotX (-0.009) ; break ;
+            case KeyEvent.VK_DOWN:
+                rotacion.rotX ( 0.009 ) ; break ;
+            default : teclaCorrecta = false ; break ; }
     
-        WakeupOnAWTEvent c = (WakeupOnAWTEvent) enmrtn.nextElement();
-        AWTEvent[] e = c.getAWTEvent();
-        MouseEvent mouse = (MouseEvent) e [0];
-        pickcanvas.setShapeLocation (mouse);
-        PickInfo pi = pickcanvas.pickClosest();
+        referencia.getTransform ( transformAntigua ) ;
         
+        transformNueva.mul ( rotacion , transformAntigua ) ;
         
-        //Comprobamos si contiene algo pi
-        if(pi != null)
-        {
-            //Devuelve el camino de nodos del grafo,
-            //desde el Locale hasta el nodo terminal clicado
-            SceneGraphPath sgp = pi.getSceneGraphPath();
-               
-            try {
-                if (sgp.nodeCount() == 2) {
-                    AstroOpaco a = (AstroOpaco) sgp.getNode( 0 );
-                    a.action();
-                }
-            } catch (Exception exc){
-                System.err.println(exc);
-            }
-            
-        }
+        referencia.setTransform(transformNueva);
         
-        wakeupOn(condition);
-    
+        wakeupOn(condicionRespuesta);
+        
     }
     
 }

@@ -35,7 +35,7 @@ public class Universo {
 
         camaraPa = new TheView(Camara.PLANTA, canvasFijo, new Point3d (0,200,0), new Point3d (0,0,0), new Vector3d (0,0,-1));
         camaraPe = new TheView(Camara.PERSPECTIVA, canvasModificar, new Point3d (80,80,80), new Point3d (0,0,0), new Vector3d (0,1,0));
-        camaraNave = new TheView(Camara.NAVE, canvasModificar, new Point3d (0,0.5,-0.25), new Point3d (0,0,1), new Vector3d (0,1,0));
+        camaraNave = new TheView(Camara.NAVE, canvasModificar, new Point3d (0,1.5,-4), new Point3d (0,0,1), new Vector3d (0,5,6));
         camaraLuna = new TheView(Camara.LUNA, canvasModificar, new Point3d (1.5,0.5,-0.9), new Point3d (-9,-0.4,-2.1), new Vector3d (0,0.1,0));
 
         camaraPa.compile();
@@ -67,9 +67,6 @@ public class Universo {
         // Se crea y se añade la escena al universo
         scene = new Escena (camaraNave, camaraLuna);
 
-        picking = new Picking(canvasModificar);
-        picking.setSchedulingBounds(new BoundingSphere (new Point3d (0.0, 0.0, 0.0 ), 200.0));
-        scene.addChild(picking);
         
         // Se optimiza la escena y se cuelga del universo
         root.compile();
@@ -78,10 +75,8 @@ public class Universo {
         //Añadimos a la raiz el universo con la escena
         locale.addBranchGraph(root);
         locale.addBranchGraph(scene);
-        
-        
         //HAY QUE PONER SINO NO VA EL PICK JODER!!!!!!!!!!!!!!!
-        picking.initSearch(scene);
+       // picking.initSearch(scene);
   }
   
   

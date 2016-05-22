@@ -88,6 +88,9 @@ public class Escena extends BranchGroup {
         sol.addPlaneta(urano);
         sol.addPlaneta(neptuno);
         
+         Anillo prueba = new Anillo(0.3, 500, 400, "imgs/ring.jpg");
+        sol.addChild(prueba);
+        
         todo.addChild(sol);
                 
         crearLuces(this);
