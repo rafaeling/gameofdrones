@@ -9,10 +9,12 @@ import Objetos.Aro;
 import java.awt.Color;
 import java.util.Enumeration;
 import javax.media.j3d.Behavior;
+import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.WakeupOnCollisionEntry;
 import javax.vecmath.Color3f;
+import javax.vecmath.Point3d;
 
 /**
  *
@@ -26,7 +28,9 @@ public class Colision extends Behavior {
     public Colision (Node unNodo ) {
         objetoA = unNodo ;
         condicion = new WakeupOnCollisionEntry ( objetoA , WakeupOnCollisionEntry.USE_BOUNDS ) ; // Se usa BOUNDS por rapidez
-        this.setSchedulingBounds ( objetoA . getBounds ( ) ) ;        // El ámbito del Behavior se ajusta al del objetoA
+                 this.setSchedulingBounds (new BoundingSphere (new Point3d (0.0, 0.0, 0.0), 10000.0));
+
+//        this.setSchedulingBounds ( objetoA . getBounds ( ) ) ;        // El ámbito del Behavior se ajusta al del objetoA
 System.out.println("Construido");
     }
     
@@ -40,9 +44,8 @@ System.out.println("Inicializado");
     public void processStimulus ( Enumeration criteria ) {
 System.out.println("FUNCION LLAMADA");
         // Se obtiene el objeto contra el que ha colisionado objetoA
-        WakeupOnCollisionEntry disparo = (WakeupOnCollisionEntry ) 
-criteria.nextElement ( ) ;
-        Node objetoB = disparo . getTriggeringPath ( ) . getObject ( ) ;
+        WakeupOnCollisionEntry disparo = (WakeupOnCollisionEntry ) criteria.nextElement ( ) ;
+        Node objetoB = disparo.getTriggeringPath().getObject();
         // Se procesa la colisión
         try{
 System.out.println("1" + objetoB.getClass().getName());
