@@ -46,7 +46,7 @@ public class Nave extends BranchGroup{
     BranchGroup bg;
     private RotPosPathInterpolator interpolator;
     Picking test;
-    Colision prueba;
+
     public Nave(){
         
         bg = new BranchGroup();
@@ -63,12 +63,7 @@ public class Nave extends BranchGroup{
         
         test = new Picking(tg);
 
-        
-        prueba = new Colision(this, this.getBounds());
-        
-        
-        tg.addChild(prueba);
-        
+                       
         test.setSchedulingBounds(new BoundingSphere(new Point3d(), 200.0));
         
         tg.addChild(test);

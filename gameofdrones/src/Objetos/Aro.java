@@ -5,13 +5,10 @@
  */
 package Objetos;
 
-import com.sun.j3d.utils.geometry.ColorCube;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Shape3D;
-import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.geometry.Box;
-import static com.sun.j3d.utils.geometry.Box.*;
 import com.sun.j3d.utils.geometry.Cylinder;
+import java.awt.Color;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Material;
 import javax.media.j3d.Transform3D;
@@ -26,16 +23,21 @@ import javax.vecmath.Vector3d;
  */
 public class Aro extends BranchGroup {
     
+    private Material mt;
     
     public Aro(double coordenadaX, double coordenadaZ, double grados){
        
         Appearance aparienciaAro = new Appearance();
-        aparienciaAro.setMaterial (new Material (
+        mt = new Material (
             new Color3f (0.00f, 0.00f, 0.00f),   // Color ambiental
             new Color3f (0.00f, 0.00f, 0.90f),   // Color emisivo
             new Color3f (0.00f, 0.00f, 0.00f),   // Color difuso
             new Color3f (1.00f, 1.00f, 1.00f),   // Color especular
-            17.0f ));                            // Brillo
+            17.0f );                            // Brillo
+        
+        mt.setCapability(Material.ALLOW_COMPONENT_WRITE);
+        
+        aparienciaAro.setMaterial (mt); 
         
         Appearance aparienciaPalo = (Appearance) aparienciaAro.cloneNodeComponent(true);
      
@@ -70,6 +72,13 @@ public class Aro extends BranchGroup {
         this.addChild(tg);
         
     }
+    
+    public void changeColor(Color3f c){
+        mt.setEmissiveColor(c);
+    }
 
+    public void changeColor(Color cl){
+        mt.setEmissiveColor(new Color3f(cl));
+    }
     
 }

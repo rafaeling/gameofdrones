@@ -85,6 +85,9 @@ public class Escena extends BranchGroup {
         nave.addView(camaraNave);
         luna.addView(camaraLuna);
         
+        Colision cl = new Colision(nave);
+        todo.addChild(cl);
+        
     }
     
     private void crearLuces(BranchGroup bg){
