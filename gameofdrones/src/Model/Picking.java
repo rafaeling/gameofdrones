@@ -132,7 +132,7 @@ Matrix4d matrix = new Matrix4d();
             transformAntigua.mul(transformNueva);
             transformAntigua.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
             referencia.setTransform(transformAntigua);
-            
+            /*
             uno.rotZ(Math.PI / -100);
             referencia.getTransform(dos);
             dos.get(matrix);
@@ -141,7 +141,7 @@ Matrix4d matrix = new Matrix4d();
             dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
             referencia.setTransform(dos);
             
-            
+            */
             
             
             break ;
@@ -150,6 +150,8 @@ Matrix4d matrix = new Matrix4d();
             case KeyEvent.VK_RIGHT:
             
             
+                
+                
             transformNueva.rotY(Math.PI / -100);
             referencia.getTransform(transformAntigua);
             transformAntigua.get(matrix);
@@ -158,7 +160,7 @@ Matrix4d matrix = new Matrix4d();
             transformAntigua.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
             referencia.setTransform(transformAntigua);
             
-            
+            /*
             uno.rotZ(Math.PI / 700);
             referencia.getTransform(dos);
             dos.get(matrix);
@@ -166,6 +168,7 @@ Matrix4d matrix = new Matrix4d();
             dos.mul(uno);
             dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
             referencia.setTransform(dos);
+          */
             
             
             
@@ -178,12 +181,16 @@ Matrix4d matrix = new Matrix4d();
                     y = 0;
                 }
                 y = (float) (y + 0.008); 
-                /*
+                
                 transformNueva.set(new Vector3d(0.0f, y, 0.00f));
                 referencia.getTransform(transformAntigua);
                 transformAntigua.mul(transformNueva);
                 referencia.setTransform(transformAntigua);
-                */
+                
+                
+                
+                
+                /*
                 uno.rotX(Math.PI / -70);
                 referencia.getTransform(dos);
                 dos.get(matrix);
@@ -191,7 +198,7 @@ Matrix4d matrix = new Matrix4d();
                 dos.mul(uno);
                 dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
                 referencia.setTransform(dos);
-                
+                */
                 
                 break ;
             case KeyEvent.VK_DOWN:
@@ -200,12 +207,13 @@ Matrix4d matrix = new Matrix4d();
                     y = 0;
                 }
                 y = (float) (y - 0.01) ;
-                /*
+                
                 transformNueva.set(new Vector3d(0.0f, y, 0.0f));
                 referencia.getTransform(transformAntigua);
                 transformAntigua.mul(transformNueva);
                 referencia.setTransform(transformAntigua);
-                */
+                
+                /*
                 uno.rotX(Math.PI / 100);
                 referencia.getTransform(dos);
                 dos.get(matrix);
@@ -213,6 +221,7 @@ Matrix4d matrix = new Matrix4d();
                 dos.mul(uno);
                 dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
                 referencia.setTransform(dos);
+                */
                 break ;
            
             default : teclaCorrecta = false ; break ; }
