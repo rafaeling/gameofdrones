@@ -69,8 +69,7 @@ public class Escena extends BranchGroup {
             Aro aroNuevo = new Aro( Math.random()*200.0 - 100.0 , Math.random()*200.0 - 100.0 , 90);
             todo.addChild(aroNuevo);
         }
-        
-        aro.
+  
         
         //Aro aro2 = new Aro(10,20,0);
         //todo.addChild(aro2);

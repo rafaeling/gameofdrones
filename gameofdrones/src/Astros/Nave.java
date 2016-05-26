@@ -12,6 +12,9 @@ import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
 import java.io.FileNotFoundException;
+import javafx.event.EventType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javax.media.j3d.Alpha;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
@@ -23,6 +26,7 @@ import javax.vecmath.AxisAngle4f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3d;
 
 /**
  *
@@ -53,24 +57,31 @@ public class Nave extends BranchGroup{
         puntosOrientacion[1] = new Quat4f();
         puntosOrientacion[1].set(new AxisAngle4f(0.0f, 0.0f, 0.0f, (float) Math.toRadians(0)));
         
-        Transform3D t3d = new Transform3D();
+        //Transform3D t3d = new Transform3D();
         
-        tg = new TransformGroup(t3d);
+        Transform3D altitud = new Transform3D();
+
+        
+        //tg = new TransformGroup(t3d);
+        
+        
+        
+        //altitud.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.toRadians(180)));
+        tg = new TransformGroup(altitud);
         
         tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         
         tg.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-        
-        
-        
-        Alpha value = new Alpha(-1, Alpha.INCREASING_ENABLE, 0, 0, 10000, 0, 0, 0, 0 ,0);
+        /*
+        Alpha value = new Alpha(-1, Alpha.INCREASING_ENABLE, 0, 0, 100000, 0, 0, 0, 0 ,0);
         interpolator = new RotPosPathInterpolator(value, tg, t3d, knots, puntosOrientacion, puntosTrayectoria);
         interpolator.setSchedulingBounds(new BoundingSphere (new Point3d (0.0, 0.0, 0.0 ), 200.0)); // Se le pone el entorno de activación
         interpolator.setEnable(true); // Se activa
+        */
         
-        test = new Picking(interpolator);
+        test = new Picking(tg);
         
-        tg.addChild(interpolator);
+       // tg.addChild(interpolator);
         
         
         
@@ -111,5 +122,6 @@ public class Nave extends BranchGroup{
     {
         bg.addChild(camera);
     }
+    
     
 }

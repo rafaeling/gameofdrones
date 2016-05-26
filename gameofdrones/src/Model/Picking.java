@@ -22,11 +22,16 @@ import javax.media.j3d.RotPosPathInterpolator;
 import javax.media.j3d.SceneGraphPath;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
+import javax.media.j3d.WakeupCriterion;
 import javax.media.j3d.WakeupOnAWTEvent;
+import javax.media.j3d.WakeupOnElapsedFrames;
+import javax.media.j3d.WakeupOr;
 import javax.vecmath.AxisAngle4f;
+import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3d;
 
 /**
  *
@@ -39,8 +44,9 @@ public class Picking extends Behavior{
     private WakeupOnAWTEvent condition;
   */
     
-    private RotPosPathInterpolator referencia;
-    WakeupOnAWTEvent condicionRespuesta = new WakeupOnAWTEvent (KeyEvent.KEY_PRESSED);
+    private TransformGroup referencia;
+    WakeupOnElapsedFrames condicionRespuesta;
+    WakeupOnAWTEvent condicion;
     private Transform3D rotacion = new Transform3D ( ) ;
     private Transform3D transformAntigua = new Transform3D ( ) ;
     private Transform3D transformNueva = new Transform3D ( ) ;
@@ -48,18 +54,20 @@ public class Picking extends Behavior{
     Quat4f[] puntosOrientacion = new Quat4f[2];
     float [] knots = {0f, 1f};
     private double velocidad = 0;
+    WakeupCriterion[] Eventos = new WakeupCriterion[2];
+    WakeupOr keyCriterion;
     
     float x, y, z;
     
-    public Picking(RotPosPathInterpolator value)
+Matrix4d matrix = new Matrix4d();
+    
+    public Picking(TransformGroup value)
     {
             referencia = value;
             
             x = 0;
             y = 0;
             z = 0;
-            
-            
     }
     
     
@@ -67,62 +75,122 @@ public class Picking extends Behavior{
     @Override
     public void initialize() {
         //setEnable(false); // El pick comienza deshabilitado esperando al initSearch
-        wakeupOn(condicionRespuesta);
+        //condicionRespuesta = new WakeupOnElapsedFrames(0);
+        //wakeupOn(condicionRespuesta);
+        
+        
+        
+        Eventos[0] = new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED);
+        Eventos[1] = new WakeupOnElapsedFrames(0);
+        
+        keyCriterion = new WakeupOr(Eventos);
+        
+        wakeupOn(keyCriterion);
     }
 
     @Override
     public void processStimulus(Enumeration criterios) {
-
-        WakeupOnAWTEvent unCriterio = (WakeupOnAWTEvent) criterios.nextElement();
-        AWTEvent[ ] eventos = unCriterio.getAWTEvent();
-        KeyEvent tecla = (KeyEvent) eventos[0];
+        
+       
+        WakeupCriterion wakeup;
+        AWTEvent[] event;
         boolean teclaCorrecta = true ;
-        
-        
-        switch ( tecla.getKeyCode( ) ) {
+
+        while (criterios.hasMoreElements()) {
+            wakeup = (WakeupCriterion) criterios.nextElement();
+
+            if (!(wakeup instanceof WakeupOnAWTEvent)) {
+                continue;
+            }
+
+            event = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
+
+            KeyEvent tecla = (KeyEvent) event[0];
+            
+            switch ( tecla.getKeyCode( ) ) {
             
             
             
             case KeyEvent.VK_LEFT:
-                z = z - 1; break ;
+            transformNueva.rotY(Math.PI / 300);
+            referencia.getTransform(transformAntigua);
+            transformAntigua.get(matrix);
+            transformAntigua.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            transformAntigua.mul(transformNueva);
+            transformAntigua.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
+            referencia.setTransform(transformAntigua);
+            break ;
+                
+                
             case KeyEvent.VK_RIGHT:
-                z = z + 1; ; break ;
-            
-            
+            transformNueva.rotY(Math.PI / -300);
+            referencia.getTransform(transformAntigua);
+            transformAntigua.get(matrix);
+            transformAntigua.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            transformAntigua.mul(transformNueva);
+            transformAntigua.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
+            referencia.setTransform(transformAntigua);
+            break ;
+                
             case KeyEvent.VK_UP:
-                y = y + 1; break ;
+                
+                if(y < 0)
+                {
+                    y = 0;
+                }
+                y = (float) (y + 0.05); 
+                transformNueva.set(new Vector3d(0.0f, y, 0.00f));
+                referencia.getTransform(transformAntigua);
+                transformAntigua.mul(transformNueva);
+                referencia.setTransform(transformAntigua);
+                
+                break ;
             case KeyEvent.VK_DOWN:
-                y = y - 1 ; break ;
+                if(y > 0)
+                {
+                    y = 0;
+                }
+                y = (float) (y - 0.05) ;
+                transformNueva.set(new Vector3d(0.0f, y, 0.0f));
+                referencia.getTransform(transformAntigua);
+                transformAntigua.mul(transformNueva);
+                referencia.setTransform(transformAntigua);
+                break ;
            
             default : teclaCorrecta = false ; break ; }
+            
+            
+            
+            
+        }
+        
+        
+        /*    
+        WakeupOnAWTEvent unCriterio = (WakeupOnAWTEvent) criterios[0];
+        AWTEvent[ ] eventos = unCriterio.getAWTEvent();
+        KeyEvent tecla = (KeyEvent) eventos[0];
+        boolean teclaCorrecta = true ;
+       */
+        
+       
     
-       
-        
-        puntosTrayectoria[0] = new Point3f(0f,0,0f);
-        puntosTrayectoria[1] = new Point3f(10f,y,z);
-        
-       
-        
-        puntosOrientacion[0] = new Quat4f();
-        puntosOrientacion[0].set(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.toRadians(90)));
-        puntosOrientacion[1] = new Quat4f();
-        puntosOrientacion[1].set(new AxisAngle4f(0f, 0f, 0.0f, (float) Math.toRadians(0)));
    
-        
-        referencia.setPathArrays(knots, puntosOrientacion, puntosTrayectoria);
-        
-        
-        //interpolator.getTransformAxis();
-   /*    
-        transformAntigua = referencia.getTransformAxis();
-        
-        transformNueva.mul ( rotacion , transformAntigua ) ;
-        
-        referencia.setTransformAxis(transformNueva);
+   transformNueva.set(new Vector3d(0.0f, 0.0f, 0.08f));
+   referencia.getTransform(transformAntigua);
+   transformAntigua.mul(transformNueva);
+   referencia.setTransform(transformAntigua);
+   
+   /*
+            transformNueva.set(new Vector3d(x, y, z));
+            referencia.getTransform(transformAntigua);
+            transformAntigua.mul(transformNueva);
+            referencia.setTransform(transformAntigua);
 
-*/
-        
-        wakeupOn(condicionRespuesta);
+**/
+   
+   
+   
+        wakeupOn(keyCriterion);
         
     }
     
