@@ -28,7 +28,7 @@ public class Gameofdrones {
         
         Canvas3D canvas2 = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
         
-        canvas2.setSize(400,400);
+        canvas2.setSize(1000,700);
 
         // Se crea el Universo con dicho Canvas3D
         Universo universe = new Universo (canvas, canvas2);

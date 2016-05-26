@@ -50,6 +50,16 @@ public class Picking extends Behavior{
     private Transform3D rotacion = new Transform3D ( ) ;
     private Transform3D transformAntigua = new Transform3D ( ) ;
     private Transform3D transformNueva = new Transform3D ( ) ;
+    
+    
+    private Transform3D uno = new Transform3D ( ) ;
+    
+    private Transform3D dos = new Transform3D ( ) ;
+    
+    private Transform3D extuno = new Transform3D ( ) ;
+    
+    private Transform3D extdos = new Transform3D ( ) ;
+    
     Point3f[] puntosTrayectoria = new Point3f[2];
     Quat4f[] puntosOrientacion = new Quat4f[2];
     float [] knots = {0f, 1f};
@@ -92,7 +102,7 @@ Matrix4d matrix = new Matrix4d();
     public void processStimulus(Enumeration criterios) {
         
        
-        WakeupCriterion wakeup;
+        WakeupCriterion wakeup = null;
         AWTEvent[] event;
         boolean teclaCorrecta = true ;
 
@@ -112,24 +122,53 @@ Matrix4d matrix = new Matrix4d();
             
             
             case KeyEvent.VK_LEFT:
-            transformNueva.rotY(Math.PI / 300);
+            
+                
+                
+            transformNueva.rotY(Math.PI / 100);
             referencia.getTransform(transformAntigua);
             transformAntigua.get(matrix);
             transformAntigua.setTranslation(new Vector3d(0.0, 0.0, 0.0));
             transformAntigua.mul(transformNueva);
             transformAntigua.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
             referencia.setTransform(transformAntigua);
+            
+            uno.rotZ(Math.PI / -100);
+            referencia.getTransform(dos);
+            dos.get(matrix);
+            dos.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            dos.mul(uno);
+            dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
+            referencia.setTransform(dos);
+            
+            
+            
+            
             break ;
                 
                 
             case KeyEvent.VK_RIGHT:
-            transformNueva.rotY(Math.PI / -300);
+            
+            
+            transformNueva.rotY(Math.PI / -100);
             referencia.getTransform(transformAntigua);
             transformAntigua.get(matrix);
             transformAntigua.setTranslation(new Vector3d(0.0, 0.0, 0.0));
             transformAntigua.mul(transformNueva);
             transformAntigua.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
             referencia.setTransform(transformAntigua);
+            
+            
+            uno.rotZ(Math.PI / 700);
+            referencia.getTransform(dos);
+            dos.get(matrix);
+            dos.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+            dos.mul(uno);
+            dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
+            referencia.setTransform(dos);
+            
+            
+            
             break ;
                 
             case KeyEvent.VK_UP:
@@ -138,11 +177,21 @@ Matrix4d matrix = new Matrix4d();
                 {
                     y = 0;
                 }
-                y = (float) (y + 0.05); 
+                y = (float) (y + 0.008); 
+                /*
                 transformNueva.set(new Vector3d(0.0f, y, 0.00f));
                 referencia.getTransform(transformAntigua);
                 transformAntigua.mul(transformNueva);
                 referencia.setTransform(transformAntigua);
+                */
+                uno.rotX(Math.PI / -70);
+                referencia.getTransform(dos);
+                dos.get(matrix);
+                dos.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+                dos.mul(uno);
+                dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
+                referencia.setTransform(dos);
+                
                 
                 break ;
             case KeyEvent.VK_DOWN:
@@ -150,17 +199,24 @@ Matrix4d matrix = new Matrix4d();
                 {
                     y = 0;
                 }
-                y = (float) (y - 0.05) ;
+                y = (float) (y - 0.01) ;
+                /*
                 transformNueva.set(new Vector3d(0.0f, y, 0.0f));
                 referencia.getTransform(transformAntigua);
                 transformAntigua.mul(transformNueva);
                 referencia.setTransform(transformAntigua);
+                */
+                uno.rotX(Math.PI / 100);
+                referencia.getTransform(dos);
+                dos.get(matrix);
+                dos.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+                dos.mul(uno);
+                dos.setTranslation(new Vector3d(matrix.m03, matrix.m13,matrix.m23));
+                referencia.setTransform(dos);
                 break ;
            
             default : teclaCorrecta = false ; break ; }
-            
-            
-            
+
             
         }
         
@@ -175,7 +231,7 @@ Matrix4d matrix = new Matrix4d();
        
     
    
-   transformNueva.set(new Vector3d(0.0f, 0.0f, 0.08f));
+   transformNueva.set(new Vector3d(0.0f, 0.0f, 0.1f));
    referencia.getTransform(transformAntigua);
    transformAntigua.mul(transformNueva);
    referencia.setTransform(transformAntigua);
