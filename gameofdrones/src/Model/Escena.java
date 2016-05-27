@@ -5,11 +5,9 @@
  */
 package Model;
 
-import Astros.*;
+import Objetos.Nave;
 import Objetos.Aro;
 import com.sun.j3d.utils.geometry.Box;
-import static java.lang.Math.sqrt;
-import java.util.ArrayList;
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
@@ -37,9 +35,7 @@ public class Escena extends BranchGroup {
     Nave nave;
     BranchGroup todo;
         
-    public Escena(TheView camaraNave, TheView camaraLuna){
-        int factorVelocidad = 800000;
-        int factorVelocidadS = 1000000;
+    public Escena(TheView camaraNave){
         
         todo = new BranchGroup();
         
@@ -75,15 +71,15 @@ public class Escena extends BranchGroup {
         //todo.addChild(aro2);
         todo.addChild(aro);
        
-        Satelite luna = new Satelite((float) sqrt(3476f/12756f), "imgs/moon.jpg", 0, 10, 100000);
+        //Satelite luna = new Satelite((float) sqrt(3476f/12756f), "imgs/moon.jpg", 0, 10, 100000);
 
-        todo.addChild(luna);
+        //todo.addChild(luna);
 
         crearLuces(this);
         this.addChild(todo);
         
         nave.addView(camaraNave);
-        luna.addView(camaraLuna);
+        //luna.addView(camaraLuna);
         
         Colision cl = new Colision(nave);
         todo.addChild(cl);

@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Astros;
+package Objetos;
 
-import Model.Colision;
 import Model.Picking;
 import Model.TheView;
 import com.sun.j3d.loaders.IncorrectFormatException;
@@ -13,23 +12,15 @@ import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
 import java.io.FileNotFoundException;
-import javafx.event.EventType;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javax.media.j3d.Alpha;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Node;
 import javax.media.j3d.RotPosPathInterpolator;
-import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.AxisAngle4f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3d;
 
 /**
  *
@@ -53,38 +44,24 @@ public class Nave extends BranchGroup{
         
         Transform3D altitud = new Transform3D();
 
-        
         tg = new TransformGroup(altitud);
-        
         tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        
         tg.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         
-        
         test = new Picking(tg);
-
                        
         test.setSchedulingBounds(new BoundingSphere(new Point3d(), 200.0));
         
         tg.addChild(test);
-        
-
        
         Scene modelo = null; 
         ObjectFile archivo = new ObjectFile (ObjectFile.RESIZE | ObjectFile.STRIPIFY | ObjectFile.TRIANGULATE );
         try {
             modelo = archivo.load ("imgs/naveEspacial/naveEspacial.obj");
-        } catch (FileNotFoundException e) {
-            System.err.println (e);
-            System.exit(1);
-        } catch (ParsingErrorException e) {
-            System.err.println (e);
-            System.exit(1);
-        } catch (IncorrectFormatException e) {
+        } catch (FileNotFoundException | ParsingErrorException | IncorrectFormatException e) {
             System.err.println (e);
             System.exit(1);
         }
-        
         
         bg.addChild ( modelo.getSceneGroup() );
         tg.addChild(bg);

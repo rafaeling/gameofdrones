@@ -14,27 +14,28 @@ import Model.Universo;
  * @author Carlos y Rafael
  */
 public class ControlWindow extends JFrame {
-  private Universo universe;
+    
+    final private Universo universe;
 
-  public ControlWindow(Canvas3D canvasNormal, Canvas3D canvasModificar, Universo anUniverse) {
-    super();
-    universe = anUniverse;
-    initComponents();
-    setLocation (920, 100);
-    addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent e) {
-        closeApp(0);
-      }
-    });
-    Visualization visualization = new Visualization (this, false, canvasNormal);
-    visualization.setVisible(true);
-    
-    Visualization visualization2 = new Visualization (this, false, canvasModificar);
-    visualization2.setVisible(true);
-    
-    pack();
-  }
+    public ControlWindow(Canvas3D canvas, Universo anUniverse) {
+        super();
+        universe = anUniverse;
+        initComponents();
+        setLocation (920, 100);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeApp(0);
+            }
+        });
+        //Visualization visualization = new Visualization (this, false, canvasNormal);
+        //visualization.setVisible(true);
+
+        Visualization visualization2 = new Visualization (this, false, canvas);
+        visualization2.setVisible(true);
+
+        pack();
+    }
 
   
   /**
