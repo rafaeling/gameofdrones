@@ -133,7 +133,7 @@ public class Aro extends BranchGroup {
         aparienciaAro.setMaterial (mt); 
              
         TransparencyAttributes myTA = new TransparencyAttributes( );
-        myTA.setTransparency( 0.5f );
+        myTA.setTransparency( 0.8f );
         myTA.setTransparencyMode( TransparencyAttributes.BLENDED );
         aparienciaAro.setTransparencyAttributes(myTA);
         
