@@ -82,7 +82,6 @@ public class Picking extends Behavior{
         //condicionRespuesta = new WakeupOnElapsedFrames(0);
         //wakeupOn(condicionRespuesta);
         
-        
         Eventos[0] = new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED);
         Eventos[1] = new WakeupOnElapsedFrames(0);
         

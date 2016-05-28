@@ -15,6 +15,7 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Light;
 import javax.media.j3d.Material;
 import javax.media.j3d.PointLight;
+import javax.media.j3d.Shape3D;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
@@ -22,6 +23,7 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 
 /**
@@ -40,7 +42,11 @@ public class Escena extends BranchGroup {
         todo = new BranchGroup();
         
         nave = new Nave();
-        todo.addChild(nave);
+         Transform3D subirNave3d = new Transform3D();
+         subirNave3d.setTranslation(new Vector3f(0,4,0) );
+         TransformGroup subirNave = new TransformGroup(subirNave3d);
+         subirNave.addChild(nave);
+        todo.addChild(subirNave);
         
         Appearance ap = new Appearance();
         ap.setMaterial (new Material (
@@ -52,39 +58,29 @@ public class Escena extends BranchGroup {
 
         Box suelo = new Box(10000, (float) 0.1, 10000, ap);
         Transform3D altitud = new Transform3D();
-        altitud.setTranslation(new Vector3d(0,-3,0) );
+        altitud.setTranslation(new Vector3d(0,0,0) );
         TransformGroup bajarSuelo = new TransformGroup(altitud);
         bajarSuelo.addChild(suelo);
         todo.addChild(bajarSuelo);
         
-        Aro aro = new Aro(10,10,0);
-        
-        //Aro [] aros = new Aro[100];
         for (int i=0; i<100; i++){
-            //aros[i] = new Aro( Math.random()*1000.0 - 500.0 , Math.random()*1000.0 - 500.0 , 0);
             Aro aroNuevo = new Aro( Math.random()*200.0 - 100.0 , Math.random()*200.0 - 100.0 , 90);
             todo.addChild(aroNuevo);
         }
   
-        
-        //Aro aro2 = new Aro(10,20,0);
-        //todo.addChild(aro2);
-        todo.addChild(aro);
-       
-        //Satelite luna = new Satelite((float) sqrt(3476f/12756f), "imgs/moon.jpg", 0, 10, 100000);
-
-        //todo.addChild(luna);
-
         crearLuces(this);
         this.addChild(todo);
         
         nave.addView(camaraNave);
-        //luna.addView(camaraLuna);
         
         Colision cl = new Colision(nave);
         todo.addChild(cl);
         
+        for (int i=0; i<6; i++){
+            suelo.getShape(i).setUserData("suelo");
+        }
     }
+    
     
     private void crearLuces(BranchGroup bg){
 
