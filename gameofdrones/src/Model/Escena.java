@@ -9,10 +9,15 @@ import Objetos.Nave;
 import Objetos.Aro;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Sphere;
+import com.sun.j3d.utils.image.TextureLoader;
+import java.util.Enumeration;
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.IndexedQuadArray;
 import javax.media.j3d.Light;
 import javax.media.j3d.Material;
 import javax.media.j3d.PointLight;
@@ -50,6 +55,8 @@ public class Escena extends BranchGroup {
          subirNave.addChild(nave);
         todo.addChild(subirNave);
         
+        
+        
         Appearance ap = new Appearance();
         ap.setMaterial (new Material (
             new Color3f (0.50f, 1.00f, 0.50f),   // Color ambiental
@@ -58,12 +65,21 @@ public class Escena extends BranchGroup {
             new Color3f (0.20f, 0.20f, 0.20f),   // Color especular
             0f ));                            // Brillo
 
-        Box suelo = new Box(10000, (float) 0.1, 10000, ap);
+        TextureLoader texturaImg = new TextureLoader ("imgs/cesped2.jpg", null);
+        Texture textura = texturaImg.getTexture();
+        ap.setTexture(textura);
+        
+        Box suelo = new Box(250, (float) 0.1, 250, Box.GENERATE_TEXTURE_COORDS, ap);
+        
         Transform3D altitud = new Transform3D();
         altitud.setTranslation(new Vector3d(0,0,0) );
         TransformGroup bajarSuelo = new TransformGroup(altitud);
         bajarSuelo.addChild(suelo);
-        todo.addChild(bajarSuelo);
+        //todo.addChild(bajarSuelo);
+        
+        todo.addChild(loadGrass());
+        
+        
         
         /*
         Appearance apTotal = new Appearance();
@@ -140,5 +156,105 @@ public class Escena extends BranchGroup {
          aLight.setEnable (true);
          bg.addChild(aLight);
     }
+    
+    private Shape3D loadGrass(){
+        
+        float [] coordenadas = {
+            -125f , -0.05f , -125f , // Vértice 0. definición de los vértices del cubo
+            +125f , -0.05f , -125f , // 1
+            -125f , +0.05f , -125f , // 2
+            +125f , +0.05f , -125f , // 3
+            -125f , -0.05f , +125f , // 4
+            +125f , -0.05f , +125f , // 5
+            -125f , +0.05f , +125f , // 6
+            +125f , +0.05f , +125f , // 7
+            0,0,0 , 0,0,0 , 0,0,0 , 0,0,0 , 0,0,0
+        };
+        
+        int [ ] indices = {
+            0 , 2 , 3 , 1 , // Cara trasera // Vértices que conforman la cara
+            4 , 5 , 7 , 6 , // Frontal
+            1 , 3 , 7 , 5 , // Derecha
+            0 , 4 , 6 , 2 , // Izquierda
+            0 , 1 , 5 , 4 , // Inferior
+            2 , 6 , 7 , 3   // Superior
+        } ;
+        
+        float [ ] coordenadasTextura = {
+            10*-0.00f , 10*0.00f , // 0
+            10*-0.33f , 10*0.00f , // 1
+            10*-0.67f , 10*0.00f , // 2
+            10*-1.00f , 10*0.00f , // 3
+            10*-0.00f , 10*0.50f , // 4
+            10*-0.33f , 10*0.50f , // 5
+            10*-0.67f , 10*0.50f , // 6
+            10*-1.00f , 10*0.50f , // 7
+            10*-0.00f , 10*1.00f , // 8
+            10*-0.33f , 10*1.00f , // 9
+            10*-0.67f , 10*1.00f , // 10
+            10*-1.00f , 10*1.00f   // 11
+        } ;
+        
+        int [ ] indicesTextura = {
+            0 , 1 , 5 , 4 ,  // Cara trasera    // Ejemplo: Definición de los índices que indican,
+            1 , 2 , 6 , 5 ,  // Frontal         // para cada vértice de cada cara,
+            2 , 3 , 7 , 6 ,  // Derecha         // que coordenada de textura se tiene que usar
+            4 , 5 , 9 , 8 ,  // Izquierda
+            5 , 6 , 10 , 9 , // Inferior
+            6 , 7 , 11 , 10  // Superior
+        } ;
+        
+        IndexedQuadArray cubo = new IndexedQuadArray (
+            coordenadas.length /3 ,
+            IndexedQuadArray.COORDINATES |
+            IndexedQuadArray.TEXTURE_COORDINATE_2,
+            indices.length ) ;
+        
+        //float [] coordenadas_ = extendCoordinateVector(coordenadas, coordenadasTextura.length);
+        
+        cubo.setCoordinates (0 , coordenadas ) ;
+        cubo.setCoordinateIndices (0 , indices ) ;
+        cubo.setTextureCoordinates (0 , 0 , coordenadasTextura ) ;
+        cubo.setTextureCoordinateIndices (0 , 0 , indicesTextura ) ;
+
+        Appearance ap = new Appearance();
+        ap.setMaterial (new Material (
+            new Color3f (0.50f, 1.00f, 0.50f),   // Color ambiental
+            new Color3f (0.00f, 0.00f, 0.00f),   // Color emisivo
+            new Color3f (0.80f, 1.00f, 0.80f),   // Color difuso
+            new Color3f (0.20f, 0.20f, 0.20f),   // Color especular
+            0f ));                            // Brillo
+
+        TextureLoader texturaImg = new TextureLoader ("imgs/cesped2.jpg", null);
+        Texture textura = texturaImg.getTexture();
+        ap.setTexture(textura);
+        
+        Shape3D shape = new Shape3D();
+        shape.setGeometry(cubo);
+        shape.setAppearance(ap);
+        
+        return shape;
+    }
+    
+    // Función extraída de los apuntes. NO SÉ CÓMO FUNCIONA. Sirve para que no falle añadiendo vértices innecesarios
+    private float [ ] extendCoordinateVector ( float [ ] coordinates , int textureCoordinateVectorSize ) {
+        int nPoints = coordinates.length / 3 ;
+        int nTextureCoordinates = textureCoordinateVectorSize / 2 ;
+        if ( nPoints >= nTextureCoordinates ) {
+            return coordinates ; 
+        } else {
+            int i , j ;
+            int resultSize = 3 * nTextureCoordinates;
+            float [] result = new float [resultSize] ;
+            for ( i = 0; i < coordinates.length ; i++) {
+                result[i] = coordinates[i] ; 
+            }
+            for ( j = i ; j < resultSize ; j++) { 
+                result[j] = 0.0f ; 
+            }
+            return result ;
+        }
+    }
+
     
 }
