@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import Model.Universo;
+import com.sun.j3d.utils.universe.SimpleUniverse;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -31,17 +33,23 @@ public class GameView extends javax.swing.JFrame {
     
     
     
-    public GameView(Canvas3D canvas) {
+    public GameView() {
         initComponents();
         
-        score.setVisible(false);
-        points.setVisible(false);
+        score.setVisible(true);
+        points.setVisible(true);
         //points.setBackground(new Color(0, 255, 0, 0));
         //points.setOpaque(false);
         
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         this.setState(JFrame.MAXIMIZED_BOTH);
         
+        
+        Canvas3D canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+        canvas.setSize(1000,700);
+
+        // Se crea el Universo con dicho Canvas3D
+        Universo universe = new Universo (canvas);
         
         this.canvas2 = canvas;
         
@@ -143,9 +151,9 @@ public class GameView extends javax.swing.JFrame {
     
     public void setScore(int puntos)
     {
+        String num = Integer.toString(puntos);
         
-        
-        this.score.setText(Integer.toString(Integer.parseInt(this.score.toString())+1));
+        this.score.setText(num);
         this.repaint();
     }
 

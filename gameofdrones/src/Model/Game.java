@@ -5,6 +5,7 @@
  */
 package Model;
 
+import GUI.GameView;
 import Objetos.Aro;
 import java.awt.Color;
 import javax.media.j3d.Node;
@@ -16,9 +17,24 @@ import javax.media.j3d.Shape3D;
  */
 public class Game {
     
-    private static final Game INSTANCE = new Game();
-    private Game() {}
-    public static Game getInstance() { return INSTANCE; }
+    private static Game INSTANCE = null;
+    private static GameView vista = null;
+    private Game() {
+                
+
+    }
+    public static Game getInstance() { 
+        
+        
+        if(INSTANCE == null) {
+         INSTANCE = new Game();
+         vista = new GameView();
+         vista.showWindow();
+        }
+        
+        return INSTANCE;
+    
+    }
     
     //--------------------------------------------
     
@@ -26,7 +42,16 @@ public class Game {
     boolean jugando = true;
     
     public int getPuntuacion(){ return puntuacion; }
-    public void setPuntuacion(int puntuacion){ this.puntuacion = puntuacion; }
+    public void setPuntuacion(int puntuacion){ 
+    
+        this.puntuacion = this.puntuacion + puntuacion;
+    
+        vista.setScore(this.puntuacion);
+        
+        System.out.println(this.puntuacion);
+    }
+    
+    
     
     public boolean isRunning(){ return jugando; }
     
@@ -35,6 +60,9 @@ public class Game {
             if ( "centro".equals((String) objeto.getUserData())){
                 System.out.println("Centro");
                 ( (Aro) ( (Shape3D) objeto ).getParent().getParent().getParent().getParent() ).changeColor(Color.WHITE);
+                
+                this.setPuntuacion(1);
+            
             } else if ( "borde".equals((String) objeto.getUserData()) ) {
                 ( (Aro) ( (Shape3D) objeto ).getParent().getParent().getParent().getParent().getParent().getParent() ).changeColor(Color.RED);
                 System.out.println("Borde");

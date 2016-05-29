@@ -25,16 +25,20 @@ public class Gameofdrones {
         // Se le da el tamaño deseado
         //canvas.setSize(20, 20);
         
-        Canvas3D canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-        canvas.setSize(1000,700);
+        //7/Canvas3D canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+        //canvas.setSize(1000,700);
 
         // Se crea el Universo con dicho Canvas3D
-        Universo universe = new Universo (canvas);
+        //Universo universe = new Universo (canvas);
         
         // Se crea la GUI a partir del Canvas3D y del Universo
-        ControlWindow controlWindow2 = new ControlWindow (canvas, universe);
+        //ControlWindow controlWindow2 = new ControlWindow (canvas, universe);
         // Se muestra la ventana principal de la aplicación
-        controlWindow2.showWindow ();
+        //controlWindow2.showWindow ();
+        
+        Game juego;
+        
+        juego = Game.getInstance();
 
     }
     

@@ -5,6 +5,7 @@
  */
 package Model;
 
+import GUI.GameView;
 import Objetos.Aro;
 import java.awt.Color;
 import java.util.Enumeration;
@@ -27,6 +28,9 @@ public class Colision extends Behavior {
     
     private Game game;
     
+    
+    
+    
     public Colision (Node unNodo ) {
         objetoA = unNodo ;
         condicion = new WakeupOnCollisionEntry ( objetoA , WakeupOnCollisionEntry.USE_BOUNDS ) ; // Se usa BOUNDS por rapidez
@@ -34,6 +38,8 @@ public class Colision extends Behavior {
 
 //        this.setSchedulingBounds ( objetoA . getBounds ( ) ) ;        // El ámbito del Behavior se ajusta al del objetoA
         game = Game.getInstance();
+        
+        
     }
     
     @Override
