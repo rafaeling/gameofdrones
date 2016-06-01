@@ -25,6 +25,8 @@ public class Universo {
     final private TheView camaraPe;
     //private TheView camaraPa;
     final private TheView camaraNave;
+    
+    final private TheView camaraInterior;
     //private TheView camaraLuna;
 
     public Universo (Canvas3D canvasModificar) {
@@ -35,6 +37,7 @@ public class Universo {
         //camaraPa = new TheView(Camara.PLANTA, canvasFijo, new Point3d (0,200,0), new Point3d (0,0,0), new Vector3d (0,0,-1));
         camaraPe = new TheView(Camara.PERSPECTIVA, canvasModificar, new Point3d (80,80,80), new Point3d (0,0,0), new Vector3d (0,1,0));
         camaraNave = new TheView(Camara.NAVE, canvasModificar, new Point3d (0,1.3,-8), new Point3d (0,1,1), new Vector3d (0,1,6));
+        camaraInterior = new TheView(Camara.NAVE, canvasModificar, new Point3d (0,0.4,-1), new Point3d (0,0,1), new Vector3d (0,6,0));
         
         //camaraPa.compile();
         camaraPe.compile();
@@ -69,7 +72,7 @@ public class Universo {
 
         // Se crea y se añade la escena al universo
         //scene = new Escena (camaraNave, camaraLuna);
-        scene = new Escena (camaraNave);
+        scene = new Escena (camaraNave, camaraInterior);
         
         // Se optimiza la escena y se cuelga del universo
         root.compile();
@@ -93,26 +96,24 @@ public class Universo {
     {
         System.out.println("PERSPECTIVA");
         camaraNave.deactivate();
-        //camaraLuna.deactivate();
+        camaraInterior.deactivate();
         camaraPe.activate();
         
     }
     
-    public void camaraLuna()
+    public void camaraInterior()
     {
-        camaraPerspectiva();
-//        System.out.println("LUNA");
-  //      camaraPe.deactivate();
-    //    camaraNave.deactivate();
-      //  camaraLuna.activate();
-        
+        System.out.println("INTERIOR");
+        camaraPe.deactivate();
+        camaraNave.deactivate();
+        camaraInterior.activate();
     }
     
     public void camaraNave()
     {
         System.out.println("NAVE");
         camaraPe.deactivate();
-        //camaraLuna.deactivate();
+        camaraInterior.deactivate();
         camaraNave.activate();
     }
 }

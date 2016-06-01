@@ -44,7 +44,7 @@ public class Escena extends BranchGroup {
     Nave nave;
     BranchGroup todo;
         
-    public Escena(TheView camaraNave){
+    public Escena(TheView camaraNave, TheView camaraInterior){
         
         todo = new BranchGroup();
         
@@ -112,6 +112,7 @@ public class Escena extends BranchGroup {
         this.addChild(todo);
         
         nave.addView(camaraNave);
+        nave.addView(camaraInterior);
         
         Colision cl = new Colision(nave);
         todo.addChild(cl);

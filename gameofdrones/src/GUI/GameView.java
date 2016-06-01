@@ -81,6 +81,7 @@ public class GameView extends javax.swing.JFrame {
         score = new javax.swing.JLabel();
         camara_nave = new javax.swing.JButton();
         camara_general = new javax.swing.JButton();
+        camara_interior = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -128,6 +129,14 @@ public class GameView extends javax.swing.JFrame {
             }
         });
 
+        camara_interior.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
+        camara_interior.setText("Cámara Interior");
+        camara_interior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                camara_interiorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,9 +144,6 @@ public class GameView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(camara_general)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1063, Short.MAX_VALUE)
@@ -147,7 +153,12 @@ public class GameView extends javax.swing.JFrame {
                         .addComponent(camara_nave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(score)
-                        .addGap(68, 68, 68))))
+                        .addGap(68, 68, 68))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(camara_interior)
+                            .addComponent(camara_general))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,9 +173,11 @@ public class GameView extends javax.swing.JFrame {
                         .addGap(19, 19, 19)
                         .addComponent(camara_nave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(score))
-                .addGap(29, 29, 29)
+                .addGap(38, 38, 38)
+                .addComponent(camara_interior)
+                .addGap(36, 36, 36)
                 .addComponent(camara_general, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(460, Short.MAX_VALUE))
+                .addContainerGap(386, Short.MAX_VALUE))
         );
 
         pack();
@@ -186,6 +199,12 @@ public class GameView extends javax.swing.JFrame {
         universe.camaraPerspectiva();
     }//GEN-LAST:event_camara_generalActionPerformed
 
+    private void camara_interiorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camara_interiorActionPerformed
+        // TODO add your handling code here:
+        
+        universe.camaraInterior();
+    }//GEN-LAST:event_camara_interiorActionPerformed
+
     
     public void setScore(int puntos)
     {
@@ -198,6 +217,7 @@ public class GameView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton camara_general;
+    private javax.swing.JButton camara_interior;
     private javax.swing.JButton camara_nave;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JButton play;
