@@ -219,7 +219,7 @@ public class Picking extends Behavior{
        
     
    
-   transformNueva.set(new Vector3d(0.0f, 0.0f, 0.1f));
+   transformNueva.set(new Vector3d(0.0f, 0.0f, 0.2f));
    referencia.getTransform(transformAntigua);
    transformAntigua.mul(transformNueva);
    referencia.setTransform(transformAntigua);
