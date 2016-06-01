@@ -7,6 +7,7 @@ package Model;
 
 import GUI.GameView;
 import Objetos.Aro;
+import Objetos.PlaySound;
 import java.awt.Color;
 import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
@@ -40,6 +41,8 @@ public class Game {
     
     int puntuacion = 0;
     boolean jugando = true;
+    PlaySound sonido;
+    
     
     public int getPuntuacion(){ return puntuacion; }
     public void setPuntuacion(int puntuacion){ 
@@ -62,15 +65,34 @@ public class Game {
                 ( (Aro) ( (Shape3D) objeto ).getParent().getParent().getParent().getParent() ).changeColor(Color.WHITE);
                 
                 this.setPuntuacion(1);
+                
+                sonido = new PlaySound("sonidos/beep2.wav");
+
+                sonido.play();
+
             
             } else if ( "borde".equals((String) objeto.getUserData()) ) {
                 ( (Aro) ( (Shape3D) objeto ).getParent().getParent().getParent().getParent().getParent().getParent() ).changeColor(Color.RED);
                 System.out.println("Borde");
+                
+                sonido = new PlaySound("sonidos/explosion.wav");
+
+                sonido.play();
             } else if ( "palo".equals((String) objeto.getUserData()) ) {
                 //( (Aro) ( (Shape3D) objeto ).getParent().getParent().getParent().getParent().getParent().getParent() ).changeColor(Color.RED);
                 System.out.println("palo");
+                
+                sonido = new PlaySound("sonidos/explosion.wav");
+
+                sonido.play();
+                
             } else if ( "suelo".equals((String) objeto.getUserData()) ) {
                 System.out.println("Suelo");
+                
+                sonido = new PlaySound("sonidos/explosion.wav");
+
+                sonido.play();
+                
             } else {
                 System.out.println("Otra cosa");
             }
