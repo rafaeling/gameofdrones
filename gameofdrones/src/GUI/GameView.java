@@ -31,11 +31,10 @@ public class GameView extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog2;
     private javax.swing.JPanel jPanel4 = new javax.swing.JPanel();
     
-    
+    private Universo universe;
     
     public GameView() {
         initComponents();
-        
         score.setVisible(true);
         points.setVisible(true);
         //points.setBackground(new Color(0, 255, 0, 0));
@@ -49,7 +48,7 @@ public class GameView extends javax.swing.JFrame {
         canvas.setSize(1000,700);
 
         // Se crea el Universo con dicho Canvas3D
-        Universo universe = new Universo (canvas);
+        this.universe = new Universo (canvas);
         
         this.canvas2 = canvas;
         
@@ -80,6 +79,8 @@ public class GameView extends javax.swing.JFrame {
         play = new javax.swing.JButton();
         points = new javax.swing.JLabel();
         score = new javax.swing.JLabel();
+        camara_nave = new javax.swing.JButton();
+        camara_general = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -111,20 +112,42 @@ public class GameView extends javax.swing.JFrame {
         score.setForeground(new java.awt.Color(255, 51, 51));
         score.setText("10");
 
+        camara_nave.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
+        camara_nave.setText("Cámara Nave");
+        camara_nave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                camara_naveActionPerformed(evt);
+            }
+        });
+
+        camara_general.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
+        camara_general.setText("Cámara General");
+        camara_general.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                camara_generalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1063, Short.MAX_VALUE)
-                .addComponent(points)
-                .addContainerGap(59, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(score)
-                .addGap(68, 68, 68))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(camara_general)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1063, Short.MAX_VALUE)
+                        .addComponent(points)
+                        .addContainerGap(59, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(camara_nave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(score)
+                        .addGap(68, 68, 68))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,8 +157,14 @@ public class GameView extends javax.swing.JFrame {
                     .addComponent(points)
                     .addComponent(play))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(score)
-                .addContainerGap(526, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(camara_nave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(score))
+                .addGap(29, 29, 29)
+                .addComponent(camara_general, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(460, Short.MAX_VALUE))
         );
 
         pack();
@@ -148,6 +177,15 @@ public class GameView extends javax.swing.JFrame {
         points.setVisible(true);
     }//GEN-LAST:event_playActionPerformed
 
+    private void camara_naveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camara_naveActionPerformed
+        universe.camaraNave();
+    }//GEN-LAST:event_camara_naveActionPerformed
+
+    private void camara_generalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camara_generalActionPerformed
+        // TODO add your handling code here:
+        universe.camaraPerspectiva();
+    }//GEN-LAST:event_camara_generalActionPerformed
+
     
     public void setScore(int puntos)
     {
@@ -159,6 +197,8 @@ public class GameView extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton camara_general;
+    private javax.swing.JButton camara_nave;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JButton play;
     private javax.swing.JLabel points;
