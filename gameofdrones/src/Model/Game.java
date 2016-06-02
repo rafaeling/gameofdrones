@@ -114,6 +114,7 @@ public class Game {
             } else if ( "suelo".equals((String) objeto.getUserData()) ) {
                 
                 System.out.println("Suelo");
+                addPuntuacion(-10);
                 
                 Transform3D nueva = new Transform3D();
                 nueva.setTranslation(new Vector3d(0f, 10, 0));
