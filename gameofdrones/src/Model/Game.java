@@ -7,6 +7,8 @@ package Model;
 
 import GUI.GameView;
 import Objetos.Aro;
+import Objetos.PlaySound;
+import java.io.IOException;
 import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
@@ -36,6 +38,8 @@ public class Game {
     int cantidadDeAros = 20;
     int nivel = 1;
     boolean jugando = false;
+    
+    PlaySound sonido;
     
     Colision cl;
     Picking pk;
@@ -71,11 +75,13 @@ public class Game {
         }
     }
 
-    private void verifyNewLevel(){
+    private void verifyNewLevel() throws IOException{
         cantidadDeAros--;
 
         if (cantidadDeAros == 0){
 
+            
+            
             vista.setText("Enhorabuena has conseguido pasarte el nivel.\n Ahora más de lo mismo pero con una novedad: hay más aros. 'Aros' que son cuadrados.");
             jugando = false;
 
@@ -84,6 +90,12 @@ public class Game {
 
             oneMoreLevel();
             cantidadDeAros = nivel * 20;
+            
+            sonido = new PlaySound("sonido/horn.wav");
+                
+            sonido.play();
+            sonido.play();
+            sonido.play();
         }
     }
     
@@ -97,6 +109,10 @@ public class Game {
                 
                 verifyNewLevel();
                 
+                sonido = new PlaySound("sonido/beep3.wav");
+                
+                sonido.play();
+                
                 this.addPuntuacion(100);
             
             } else if ( "borde".equals((String) objeto.getUserData()) ) {
@@ -106,19 +122,35 @@ public class Game {
                 
                 verifyNewLevel();
                 
+                sonido = new PlaySound("sonido/explosion.wav");
+                
+                sonido.play();
+                
                 this.addPuntuacion(5);
                 
             } else if ( "palo".equals((String) objeto.getUserData()) ) {
                 //( (Aro) ( (Shape3D) objeto ).getParent().getParent().getParent().getParent().getParent().getParent() ).changeColor(Color.RED);
                 System.out.println("palo");
+                
+                sonido = new PlaySound("sonido/explosion.wav");
+                
+                sonido.play();
+                
             } else if ( "suelo".equals((String) objeto.getUserData()) ) {
                 
                 System.out.println("Suelo");
+                
+                sonido = new PlaySound("sonido/explosion.wav");
+                
+                sonido.play();
+                
                 addPuntuacion(-10);
                 
                 Transform3D nueva = new Transform3D();
                 nueva.setTranslation(new Vector3d(0f, 10, 0));
                 pk.getTransformAntigua().setTransform(nueva);
+                
+                
                 
             } else {
                 System.out.println("Otra cosa");
