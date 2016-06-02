@@ -84,6 +84,8 @@ public class Universo {
   
   // ******* Public
   
+    public Escena getScene(){ return scene; }
+    
     public void closeApp (int code) {
       System.exit (code);
     }

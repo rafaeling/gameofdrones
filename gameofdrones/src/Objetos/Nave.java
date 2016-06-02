@@ -85,7 +85,7 @@ public class Nave extends BranchGroup{
         //SpotLight (Color3f color, Point3f posición, Point3f atenuación, Vector3f dirección, float ángulo, float concentración)
 
         SpotLight luz = new SpotLight (new Color3f(1,1,(float) 0.5), new Point3f(0,0,0),  
-                new Point3f (0,1,0) , new Vector3f(1,0,0), 
+                new Point3f (0,0.1f,0) , new Vector3f(1,0,0), 
                 (float) Math.PI *2 , 10);
 
         luz.setInfluencingBounds (new BoundingSphere (new Point3d (0.0, 0.0, 0.0), 10000.0));

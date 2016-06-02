@@ -28,9 +28,6 @@ public class Colision extends Behavior {
     
     private Game game;
     
-    
-    
-    
     public Colision (Node unNodo ) {
         objetoA = unNodo ;
         condicion = new WakeupOnCollisionEntry ( objetoA , WakeupOnCollisionEntry.USE_BOUNDS ) ; // Se usa BOUNDS por rapidez
@@ -38,14 +35,13 @@ public class Colision extends Behavior {
 
 //        this.setSchedulingBounds ( objetoA . getBounds ( ) ) ;        // El ámbito del Behavior se ajusta al del objetoA
         game = Game.getInstance();
-        
-        
+        game.setColision(this);
     }
     
     @Override
     public void initialize ( ) {
         wakeupOn ( condicion ) ;
-System.out.println("Inicializado");
+        this.setEnable(false);
     }
     
     @Override
@@ -57,9 +53,8 @@ System.out.println("Inicializado");
         // Se procesa la colisión        
         game.colision(objetoB);
         
-        // Se establece de nuevo e l disparador
+        // Se establece de nuevo el disparador
         wakeupOn ( condicion ) ;
-        
         
     }
 }

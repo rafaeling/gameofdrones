@@ -10,13 +10,10 @@ import Objetos.Aro;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.image.TextureLoader;
-import java.util.Enumeration;
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Geometry;
-import javax.media.j3d.GeometryArray;
 import javax.media.j3d.IndexedQuadArray;
 import javax.media.j3d.Light;
 import javax.media.j3d.Material;
@@ -47,6 +44,9 @@ public class Escena extends BranchGroup {
     public Escena(TheView camaraNave){
         
         todo = new BranchGroup();
+        
+        todo.setCapability(ALLOW_CHILDREN_WRITE);        
+        todo.setCapability(ALLOW_CHILDREN_EXTEND);
         
         nave = new Nave();
          Transform3D subirNave3d = new Transform3D();
@@ -79,34 +79,7 @@ public class Escena extends BranchGroup {
         
         todo.addChild(loadGrass());
         
-        
-        
-        /*
-        Appearance apTotal = new Appearance();
-        apTotal.setMaterial (new Material (
-            new Color3f (0.50f, 1.00f, 0.50f),   // Color ambiental
-            new Color3f (0.00f, 0.00f, 0.00f),   // Color emisivo
-            new Color3f (0.80f, 1.00f, 0.80f),   // Color difuso
-            new Color3f (0.20f, 0.20f, 0.20f),   // Color especular
-            10f ));                            // Brillo
-        TransparencyAttributes myTA = new TransparencyAttributes( );
-        myTA.setTransparency( 0.3f );
-        myTA.setTransparencyMode( TransparencyAttributes.BLENDED );
-        apTotal.setTransparencyAttributes(myTA);
-
-        Box cuadroTotal = new Box(250, 100, 250, Box.GENERATE_NORMALS_INWARD | Box.GENERATE_NORMALS, apTotal);
-        Transform3D altitudTotal = new Transform3D();
-        altitud.setTranslation(new Vector3d(0,100,0) );
-        TransformGroup altitudTotalg = new TransformGroup(altitudTotal);
-        altitudTotalg.addChild(cuadroTotal);
-        todo.addChild(altitudTotalg);
-
-        */
-        
-        for (int i=0; i<100; i++){
-            Aro aroNuevo = new Aro( Math.random()*200.0 - 100.0 , Math.random()*200.0 - 100.0 , 90);
-            todo.addChild(aroNuevo);
-        }
+        crearAros(20);
   
         crearLuces(this);
         this.addChild(todo);
@@ -116,7 +89,7 @@ public class Escena extends BranchGroup {
         Colision cl = new Colision(nave);
         todo.addChild(cl);
         
-        for (int i=0; i<1000; i++){
+        for (int i=0; i<500; i++){
             Appearance apSp = new Appearance();
             apSp.setMaterial (new Material (
                 new Color3f ( 0,0,0 ),   // Color ambiental
@@ -124,10 +97,16 @@ public class Escena extends BranchGroup {
                 new Color3f ( (float) Math.random(),(float) Math.random(),(float) Math.random() ),   // Color difuso
                 new Color3f ( (float) Math.random(),(float) Math.random(),(float) Math.random() ),   // Color especular
                 10f ));                            // Brillo
+            
+            TransparencyAttributes myTA = new TransparencyAttributes( );
+            myTA.setTransparency( (float) Math.random() );
+            myTA.setTransparencyMode( TransparencyAttributes.BLENDED );
+            apSp.setTransparencyAttributes(myTA);
+            
             float radius = (float) Math.random();
             Sphere sp = new Sphere(radius, apSp);
             Transform3D tfSp = new Transform3D();
-            tfSp.setTranslation(new Vector3d(Math.random()*200.0 - 100.0 , radius + 0.1 , Math.random()*200.0 - 100.0));
+            tfSp.setTranslation(new Vector3d(Math.random()*220.0 - 110.0 , Math.random()*20 , Math.random()*220.0 - 110.0));
             TransformGroup tgSp = new TransformGroup(tfSp);
             tgSp.addChild(sp);
             todo.addChild(tgSp);
@@ -138,6 +117,12 @@ public class Escena extends BranchGroup {
         }
     }
     
+    public void crearAros(int cantidad){
+        for (int i=0; i<cantidad; i++){
+            Aro aroNuevo = new Aro( Math.random()*200.0 - 100.0 , Math.random()*200.0 - 100.0 , (i*90) %360);
+            todo.addChild(aroNuevo);
+        }
+    }
     
     private void crearLuces(BranchGroup bg){
 
@@ -233,10 +218,13 @@ public class Escena extends BranchGroup {
         shape.setGeometry(cubo);
         shape.setAppearance(ap);
         
+        shape.setUserData("suelo");
+        
         return shape;
     }
     
     // Función extraída de los apuntes. NO SÉ CÓMO FUNCIONA. Sirve para que no falle añadiendo vértices innecesarios
+    // En verdad no sirve, no se llama en ningún sitio. Está aquí porque no la hemos quitado aún.
     private float [ ] extendCoordinateVector ( float [ ] coordinates , int textureCoordinateVectorSize ) {
         int nPoints = coordinates.length / 3 ;
         int nTextureCoordinates = textureCoordinateVectorSize / 2 ;

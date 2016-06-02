@@ -12,13 +12,6 @@ import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 import javax.media.j3d.Alpha;
 import javax.media.j3d.Behavior;
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Canvas3D;
-import javax.media.j3d.PickInfo;
-import javax.media.j3d.PositionInterpolator;
-import javax.media.j3d.RotPosPathInterpolator;
-import javax.media.j3d.SceneGraphPath;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.WakeupCriterion;
@@ -66,8 +59,12 @@ public class Picking extends Behavior{
     
     Matrix4d matrix = new Matrix4d();
     
+    Game game;
+    
     public Picking(TransformGroup value)
     {
+        game = Game.getInstance();
+        game.setPicking(this);
         referencia = value;
 
         x = 0;
@@ -81,13 +78,13 @@ public class Picking extends Behavior{
         //setEnable(false); // El pick comienza deshabilitado esperando al initSearch
         //condicionRespuesta = new WakeupOnElapsedFrames(0);
         //wakeupOn(condicionRespuesta);
-        
-        Eventos[0] = new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED);
-        Eventos[1] = new WakeupOnElapsedFrames(0);
-        
-        keyCriterion = new WakeupOr(Eventos);
-        
-        wakeupOn(keyCriterion);
+            Eventos[0] = new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED);
+            Eventos[1] = new WakeupOnElapsedFrames(0);
+
+            keyCriterion = new WakeupOr(Eventos);
+
+            wakeupOn(keyCriterion);
+        this.setEnable(false);
     }
 
     @Override
@@ -216,13 +213,11 @@ public class Picking extends Behavior{
         boolean teclaCorrecta = true ;
        */
         
-       
-    
-   
-   transformNueva.set(new Vector3d(0.0f, 0.0f, 0.2f));
-   referencia.getTransform(transformAntigua);
-   transformAntigua.mul(transformNueva);
-   referencia.setTransform(transformAntigua);
+
+        transformNueva.set(new Vector3d(0.0f, 0.0f, 0.2f));
+        referencia.getTransform(transformAntigua);
+        transformAntigua.mul(transformNueva);
+        referencia.setTransform(transformAntigua);
    
    /*
             transformNueva.set(new Vector3d(x, y, z));
@@ -238,4 +233,5 @@ public class Picking extends Behavior{
         
     }
     
+    public TransformGroup getTransformAntigua(){ return referencia; }
 }

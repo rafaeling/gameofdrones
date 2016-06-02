@@ -36,6 +36,8 @@ public class Aro extends BranchGroup {
     
     public Aro(double coordenadaX, double coordenadaZ, double grados){
         
+        this.setCapability(ALLOW_DETACH);
+        
         setAppearances();
        
         Box caja = new Box(anchuraCentro, alturaCentro, (float) 0.001, aparienciaAro);
@@ -124,8 +126,8 @@ public class Aro extends BranchGroup {
         aparienciaAro = new Appearance();
         mt = new Material (
             new Color3f (0.00f, 0.00f, 0.00f),   // Color ambiental
-            new Color3f (0.00f, 0.00f, 0.90f),   // Color emisivo
-            new Color3f (0.00f, 0.00f, 0.00f),   // Color difuso
+            new Color3f ((float) Math.random(), (float) Math.random(), (float) Math.random()),   // Color emisivo
+            new Color3f (0.00f, 0.00f, 0.0f),   // Color difuso
             new Color3f (1.00f, 1.00f, 1.00f),   // Color especular
             17.0f );                             // Brillo
         

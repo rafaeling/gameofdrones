@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Model.Game;
 import Model.Universo;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import java.awt.BorderLayout;
@@ -33,10 +34,14 @@ public class GameView extends javax.swing.JFrame {
     
     private Universo universe;
     
+    Game game;
+    
     public GameView() {
         initComponents();
         score.setVisible(true);
         points.setVisible(true);
+        
+        game = Game.getInstance();
         //points.setBackground(new Color(0, 255, 0, 0));
         //points.setOpaque(false);
         
@@ -56,10 +61,19 @@ public class GameView extends javax.swing.JFrame {
         contentPane.setLayout(new BorderLayout());
         contentPane.add(canvas2, BorderLayout.CENTER);
 
-        
         pack();
         
+        String textoExplicacion;
+        textoExplicacion  = "Bienvenido capitán.\n";
+        textoExplicacion += "La nave está bajo su mando." +
+                "Cuando esté preparado, pulse EMPEZAR y haga click en la nave para informar al piloto de que lo controla usted. " +
+                "Pase por los aros y ganará puntos invisibles sin ninguna utilidad. " +
+                "Si toca los bordes también gana puntos pero menos. " +
+                "En el fondo lo de los puntos no importa porque los niveles se pasan cuando se cogen todos los aros. " +
+                "El siguiente nivel es igual que este, no se haga ilusiones de un juego mejor.\n" +
+                "¡A la batalla!\nAunque no sea esa clase de juego de batallas";
         
+        jTextoExplicacion.setText(textoExplicacion);
     }
 
     public void showWindow () {
@@ -81,6 +95,11 @@ public class GameView extends javax.swing.JFrame {
         score = new javax.swing.JLabel();
         camara_nave = new javax.swing.JButton();
         camara_general = new javax.swing.JButton();
+        points1 = new javax.swing.JLabel();
+        jLevel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextoExplicacion = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -105,12 +124,14 @@ public class GameView extends javax.swing.JFrame {
             }
         });
 
+        points.setBackground(new java.awt.Color(255, 255, 255));
         points.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         points.setText("Points");
 
         score.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 48)); // NOI18N
         score.setForeground(new java.awt.Color(255, 51, 51));
-        score.setText("10");
+        score.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        score.setText("0");
 
         camara_nave.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
         camara_nave.setText("Cámara Nave");
@@ -128,6 +149,36 @@ public class GameView extends javax.swing.JFrame {
             }
         });
 
+        points1.setBackground(new java.awt.Color(255, 255, 255));
+        points1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        points1.setText("Level");
+
+        jLevel.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 48)); // NOI18N
+        jLevel.setForeground(new java.awt.Color(255, 51, 51));
+        jLevel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLevel.setText("1");
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane1.setOpaque(false);
+
+        jTextoExplicacion.setEditable(false);
+        jTextoExplicacion.setColumns(20);
+        jTextoExplicacion.setForeground(new java.awt.Color(153, 204, 0));
+        jTextoExplicacion.setLineWrap(true);
+        jTextoExplicacion.setRows(5);
+        jTextoExplicacion.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(jTextoExplicacion);
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jButton1.setLabel("EMPEZAR");
+        jButton1.setSelected(true);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -137,34 +188,53 @@ public class GameView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(camara_general)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1063, Short.MAX_VALUE)
-                        .addComponent(points)
-                        .addContainerGap(59, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(points1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(936, 936, 936)
+                                .addComponent(jLevel, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(camara_nave)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(camara_nave))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(score)
-                        .addGap(68, 68, 68))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(score, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(points, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(points)
-                    .addComponent(play))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(camara_nave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(play)
+                    .addComponent(points))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(camara_nave, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(score))
-                .addGap(29, 29, 29)
-                .addComponent(camara_general, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(460, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(camara_general, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(points1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLevel)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -172,7 +242,6 @@ public class GameView extends javax.swing.JFrame {
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
 
-        
         score.setVisible(true);
         points.setVisible(true);
     }//GEN-LAST:event_playActionPerformed
@@ -186,6 +255,22 @@ public class GameView extends javax.swing.JFrame {
         universe.camaraPerspectiva();
     }//GEN-LAST:event_camara_generalActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        game.start();
+        
+        jButton1.setVisible(false);
+        jTextoExplicacion.setVisible(false);
+        jScrollPane1.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void setText(String text){
+        jButton1.setVisible(true);
+        jTextoExplicacion.setVisible(true);
+        jScrollPane1.setVisible(true);
+
+        jTextoExplicacion.setText(text);
+    }
     
     public void setScore(int puntos)
     {
@@ -194,14 +279,28 @@ public class GameView extends javax.swing.JFrame {
         this.score.setText(num);
         this.repaint();
     }
+    
+    public void setLevel(int puntos)
+    {
+        String num = Integer.toString(puntos);
+        
+        this.jLevel.setText(num);
+        this.repaint();
+    }
 
+    public Universo getUniverse(){ return universe; }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton camara_general;
     private javax.swing.JButton camara_nave;
+    private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JLabel jLevel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextoExplicacion;
     private javax.swing.JButton play;
     private javax.swing.JLabel points;
+    private javax.swing.JLabel points1;
     private javax.swing.JLabel score;
     // End of variables declaration//GEN-END:variables
 }
