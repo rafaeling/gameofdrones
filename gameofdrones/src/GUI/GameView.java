@@ -90,7 +90,6 @@ public class GameView extends javax.swing.JFrame {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        play = new javax.swing.JButton();
         points = new javax.swing.JLabel();
         score = new javax.swing.JLabel();
         camara_nave = new javax.swing.JButton();
@@ -100,6 +99,7 @@ public class GameView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextoExplicacion = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -113,16 +113,6 @@ public class GameView extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        play.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
-        play.setText("Play");
-        play.setBorderPainted(false);
-        play.setContentAreaFilled(false);
-        play.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playActionPerformed(evt);
-            }
-        });
 
         points.setBackground(new java.awt.Color(255, 255, 255));
         points.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -179,6 +169,14 @@ public class GameView extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
+        jButton2.setText("Cámara Interior");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -197,8 +195,8 @@ public class GameView extends javax.swing.JFrame {
                                 .addComponent(jLevel, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(camara_nave))
+                            .addComponent(camara_nave)
+                            .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(score, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,13 +212,13 @@ public class GameView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(play)
-                    .addComponent(points))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(points)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(camara_nave, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(score))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(score)
+                    .addComponent(camara_nave, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
@@ -234,17 +232,11 @@ public class GameView extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
-
-        score.setVisible(true);
-        points.setVisible(true);
-    }//GEN-LAST:event_playActionPerformed
 
     private void camara_naveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camara_naveActionPerformed
         universe.camaraNave();
@@ -263,6 +255,10 @@ public class GameView extends javax.swing.JFrame {
         jTextoExplicacion.setVisible(false);
         jScrollPane1.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        universe.camaraInterior();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public void setText(String text){
         jButton1.setVisible(true);
@@ -294,11 +290,11 @@ public class GameView extends javax.swing.JFrame {
     private javax.swing.JButton camara_general;
     private javax.swing.JButton camara_nave;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLevel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextoExplicacion;
-    private javax.swing.JButton play;
     private javax.swing.JLabel points;
     private javax.swing.JLabel points1;
     private javax.swing.JLabel score;
